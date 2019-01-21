@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">AndroidArchitectureComponentsNavigation</string>
-    <string name="nav_menu_manage_cities">Manage Cities</string>
+    <string name="app_name">AAC-NAVIGATION</string>
+    <string name="nav_menu_manage_city">Manage City</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Toolbar title for different fragment-->
+    <string name="label_fragment_home">Home</string>
+    <string name="label_fragment_manage_city">Manage City</string>
 </resources>

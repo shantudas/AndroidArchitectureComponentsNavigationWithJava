@@ -36,11 +36,17 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         btnManageCity = (Button) view.findViewById(R.id.btnManageCity);
-        btnManageCity.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toManageCityFragment, null));
+//        btnManageCity.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toManageCityFragment, null));
+        btnManageCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.toManageCityFragment);
+            }
+        });
     }
 
 }
