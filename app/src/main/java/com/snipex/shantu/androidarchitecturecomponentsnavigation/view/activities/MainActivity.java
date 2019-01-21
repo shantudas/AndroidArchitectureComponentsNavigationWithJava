@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
@@ -30,20 +29,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         initialization();
-        
+
         setUpNavigationDrawer();
 
     }
 
-    private void setUpNavigationDrawer() {
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-
+    /**
+     * all initialization
+     *
+     * @param @null
+     */
     private void initialization() {
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
@@ -52,10 +49,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     }
 
+    /**
+     * set up navigation drawer
+     * @param @null
+     */
+    private void setUpNavigationDrawer() {
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
+        NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController,drawerLayout);
+        return NavigationUI.navigateUp(navController, drawerLayout);
     }
 
     @Override

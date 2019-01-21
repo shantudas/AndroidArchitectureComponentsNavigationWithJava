@@ -8,4 +8,5 @@
     <!-- Toolbar title for different fragment-->
     <string name="label_fragment_home">Home</string>
     <string name="label_fragment_manage_city">Manage City</string>
+    <string name="label_fragment_add_city">Add City</string>
 </resources>

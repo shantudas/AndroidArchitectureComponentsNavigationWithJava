@@ -18,6 +18,19 @@
         android:id="@+id/manageCityFragment"
         android:name="com.snipex.shantu.androidarchitecturecomponentsnavigation.view.fragments.ManageCityFragment"
         android:label="@string/label_fragment_manage_city"
-        tools:layout="@layout/fragment_manage_city" />
+        tools:layout="@layout/fragment_manage_city" >
+
+        <action
+            android:id="@+id/toAddCity"
+            app:destination="@id/addCityFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCityFragment"
+        android:name="com.snipex.shantu.androidarchitecturecomponentsnavigation.view.fragments.AddCityFragment"
+        android:label="@string/label_fragment_add_city"
+        tools:layout="@layout/fragment_add_city" >
+
+    </fragment>
 
 </navigation>
