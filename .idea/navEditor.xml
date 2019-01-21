@@ -31,7 +31,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_manageCityFragment_to_addCityFragment">
+                            <entry key="toAddCity">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -46,8 +46,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="22" />
-                            <option name="y" value="108" />
+                            <option name="x" value="-6" />
+                            <option name="y" value="122" />
                           </Point>
                         </option>
                         <option name="myPositions">
