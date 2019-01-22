@@ -62,10 +62,14 @@ public class City {
 
     public static City[] populateData() {
         return new City[] {
-                new City(1185111,"Satkhira","89.099998","22.716669"),
-                new City(1185958,"Tulāpāra","89.23333","24.51667"),
-                new City(1185099,"Sylhet","91.871674","24.51667"),
-                new City(1185116,"Netrakona","90.716667","24.883329"),
+                new City(1188909,"Dhaka","23.8103","90.4125"),
+                new City(1185128,"Rajshahi","24.3636","88.6241"),
+                new City(1185099,"Sylhet","24.8949","91.8687"),
+                new City(6413609,"Chattogram","22.3569","91.7832"),
+                new City(1336135,"Khulna","22.8456","89.5403"),
+                new City(1336137,"Barisal","22.7010","90.3535"),
+                new City(1185162,"Mymensingh","24.7471","90.4203"),
+                new City(7671048,"Rangpur","25.8483","88.9414"),
         };
     }
 }
