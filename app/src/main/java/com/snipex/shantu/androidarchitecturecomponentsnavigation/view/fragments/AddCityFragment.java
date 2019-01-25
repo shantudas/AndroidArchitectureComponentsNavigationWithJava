@@ -12,6 +12,7 @@ import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.CityAda
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.ClickListener;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.RecyclerTouchListener;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.Toolbar_ActionMode_Callback;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -36,6 +39,7 @@ public class AddCityFragment extends Fragment {
     private CityViewModel viewModel;
     private LiveData<List<City>> citiesLiveData;
     private CityAdapter adapter;
+    private ActionMode mActionMode;
 
     public AddCityFragment() {
         // Required empty public constructor
@@ -56,7 +60,7 @@ public class AddCityFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewCity);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
-        adapter = new CityAdapter();
+        adapter = new CityAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
         onItemClickListener();
@@ -69,11 +73,15 @@ public class AddCityFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Log.e(TAG, "onClick: position"+position);
+                //If ActionMode not null select item
+                if (mActionMode != null)
+                    onListItemSelect(position);
             }
 
             @Override
             public void onLongClick(View view, int position) {
                 Log.e(TAG, "onLongClick: position"+position);
+                onListItemSelect(position);
             }
         }));
     }
@@ -88,4 +96,33 @@ public class AddCityFragment extends Fragment {
             }
         });
     }
+
+    private void onListItemSelect(int position) {
+        adapter.toggleSelection(position);//Toggle the selection
+
+        boolean hasCheckedItems = adapter.getSelectedCount() > 0;//Check if any items are already selected or not
+
+
+        if (hasCheckedItems && mActionMode == null)
+            // there are some selected items, start the actionMode
+            mActionMode = ((AppCompatActivity) getActivity())
+                    .startSupportActionMode(new Toolbar_ActionMode_Callback(
+                            getActivity(),adapter)
+                    );
+        else if (!hasCheckedItems && mActionMode != null)
+            // there no selected items, finish the actionMode
+            mActionMode.finish();
+
+        if (mActionMode != null)
+            //set action mode title on item selection
+            mActionMode.setTitle(String.valueOf(adapter.getSelectedCount()) + " selected");
+
+    }
+
+    //Set action mode null after use
+    public void setNullToActionMode() {
+        if (mActionMode != null)
+            mActionMode = null;
+    }
+
 }
