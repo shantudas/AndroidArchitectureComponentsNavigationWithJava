@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.CityAdapter;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.ClickListener;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.RecyclerTouchListener;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 
 import java.util.ArrayList;
@@ -57,8 +59,23 @@ public class AddCityFragment extends Fragment {
         adapter = new CityAdapter();
         recyclerView.setAdapter(adapter);
 
+        onItemClickListener();
 
         getCityList();
+    }
+
+    private void onItemClickListener() {
+        recyclerView.addOnItemTouchListener( new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Log.e(TAG, "onClick: position"+position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Log.e(TAG, "onLongClick: position"+position);
+            }
+        }));
     }
 
     private void getCityList() {
