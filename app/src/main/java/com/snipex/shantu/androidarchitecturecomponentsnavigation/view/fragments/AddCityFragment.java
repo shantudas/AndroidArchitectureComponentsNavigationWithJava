@@ -31,6 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * action mode toolbar resource
+ * http://www.androhub.com/android-contextual-action-mode-over-toolbar/
  */
 public class AddCityFragment extends Fragment {
 
