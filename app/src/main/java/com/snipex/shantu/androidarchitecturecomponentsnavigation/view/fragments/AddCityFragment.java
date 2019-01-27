@@ -6,13 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.CityAdapter;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.ClickListener;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.RecyclerTouchListener;
-import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.Toolbar_ActionMode_Callback;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 
 import java.util.ArrayList;
@@ -20,8 +20,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -31,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
- *
+ * <p>
  * action mode toolbar resource
  * http://www.androhub.com/android-contextual-action-mode-over-toolbar/
  */
@@ -42,7 +40,8 @@ public class AddCityFragment extends Fragment {
     private CityViewModel viewModel;
     private LiveData<List<City>> citiesLiveData;
     private CityAdapter adapter;
-    private ActionMode mActionMode;
+    private List<City> cityArrayList=new ArrayList<City>();
+
 
     public AddCityFragment() {
         // Required empty public constructor
@@ -66,25 +65,18 @@ public class AddCityFragment extends Fragment {
         adapter = new CityAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
-        onItemClickListener();
-
         getCityList();
-    }
 
-    private void onItemClickListener() {
-        recyclerView.addOnItemTouchListener( new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Log.e(TAG, "onClick: position"+position);
-                //If ActionMode not null select item
-                if (mActionMode != null)
-                    onListItemSelect(position);
+                City city=cityArrayList.get(position);
+                Toast.makeText(getContext(), city.getName(),Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Log.e(TAG, "onLongClick: position"+position);
-                onListItemSelect(position);
+
             }
         }));
     }
@@ -95,37 +87,10 @@ public class AddCityFragment extends Fragment {
             @Override
             public void onChanged(List<City> cities) {
                 Log.d(TAG, "onChanged: " + cities.size());
+                cityArrayList=cities;
                 adapter.setCityList(cities);
             }
         });
-    }
-
-    private void onListItemSelect(int position) {
-        adapter.toggleSelection(position);//Toggle the selection
-
-        boolean hasCheckedItems = adapter.getSelectedCount() > 0;//Check if any items are already selected or not
-
-
-        if (hasCheckedItems && mActionMode == null)
-            // there are some selected items, start the actionMode
-            mActionMode = ((AppCompatActivity) getActivity())
-                    .startSupportActionMode(new Toolbar_ActionMode_Callback(
-                            getActivity(),adapter)
-                    );
-        else if (!hasCheckedItems && mActionMode != null)
-            // there no selected items, finish the actionMode
-            mActionMode.finish();
-
-        if (mActionMode != null)
-            //set action mode title on item selection
-            mActionMode.setTitle(String.valueOf(adapter.getSelectedCount()) + " selected");
-
-    }
-
-    //Set action mode null after use
-    public void setNullToActionMode() {
-        if (mActionMode != null)
-            mActionMode = null;
     }
 
 }
