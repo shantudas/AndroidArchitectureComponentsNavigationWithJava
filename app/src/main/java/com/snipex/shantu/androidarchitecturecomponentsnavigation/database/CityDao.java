@@ -23,4 +23,7 @@ public interface CityDao {
 
     @Query("SELECT * FROM city WHERE id = :itemId")
     LiveData<City> getCityItemById(int itemId);
+
+    @Query("SELECT * FROM city Where my_city=1")
+    LiveData<List<City>> getMyCities();
 }

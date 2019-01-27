@@ -16,17 +16,24 @@ public class CityRepository {
 
     private CityDao cityDao;
     private LiveData<List<City>> allCities;
+    private LiveData<List<City>> allMyCities;
 
 
     public CityRepository(Application application) {
         WeatherDatabase db = WeatherDatabase.getDatabase(application);
         cityDao = db.cityDao();
         allCities = cityDao.getAllCities();
+        allMyCities=cityDao.getMyCities();
     }
 
     public LiveData<List<City>> getAllCities() {
         return allCities;
     }
+
+    public LiveData<List<City>> getMyCities() {
+        return allMyCities;
+    }
+
 
     public void insert(City city) {
         new insertAsyncTask(cityDao).execute(city);

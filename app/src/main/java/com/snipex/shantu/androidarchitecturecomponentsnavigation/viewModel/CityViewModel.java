@@ -15,12 +15,14 @@ public class CityViewModel extends AndroidViewModel {
 
     private CityRepository cityRepository;
     private LiveData<List<City>> allCities;
+    private LiveData<List<City>> allMyCities;
 
 
     public CityViewModel(@NonNull Application application) {
         super(application);
         cityRepository = new CityRepository(application);
         this.allCities = cityRepository.getAllCities();
+        this.allMyCities=cityRepository.getMyCities();
     }
 
     public LiveData<List<City>> getAllCities() {
@@ -33,5 +35,9 @@ public class CityViewModel extends AndroidViewModel {
 
     public void update(City city) {
         cityRepository.update(city);
+    }
+
+    public LiveData<List<City>> getMyCities(){
+        return allMyCities;
     }
 }
