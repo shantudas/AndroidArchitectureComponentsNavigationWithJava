@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class AddCityFragment extends Fragment {
     private CityViewModel viewModel;
     private LiveData<List<City>> citiesLiveData;
     private CityAdapter adapter;
-    private List<City> cityArrayList=new ArrayList<City>();
+    private List<City> cityArrayList = new ArrayList<City>();
 
 
     public AddCityFragment() {
@@ -70,8 +71,13 @@ public class AddCityFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                City city=cityArrayList.get(position);
-                Toast.makeText(getContext(), city.getName(),Toast.LENGTH_LONG).show();
+                City city = cityArrayList.get(position);
+
+                city.setMyCity(true);
+                viewModel.update(city);
+                Toast.makeText(getContext(), city.getName() + " set as my city", Toast.LENGTH_LONG).show();
+                Navigation.findNavController(view).navigate(R.id.action_addCityFragment_to_manageCityFragment);
+
             }
 
             @Override
@@ -81,13 +87,14 @@ public class AddCityFragment extends Fragment {
         }));
     }
 
+
     private void getCityList() {
         citiesLiveData = viewModel.getAllCities();
         citiesLiveData.observe(this, new Observer<List<City>>() {
             @Override
             public void onChanged(List<City> cities) {
                 Log.d(TAG, "onChanged: " + cities.size());
-                cityArrayList=cities;
+                cityArrayList = cities;
                 adapter.setCityList(cities);
             }
         });

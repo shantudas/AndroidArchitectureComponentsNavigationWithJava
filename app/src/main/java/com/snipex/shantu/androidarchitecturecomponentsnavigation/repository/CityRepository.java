@@ -46,4 +46,26 @@ public class CityRepository {
             return null;
         }
     }
+
+    public void update(City city) {
+        new updateAsyncTask(cityDao).execute(city);
+    }
+
+    private static class updateAsyncTask extends AsyncTask<City, Void, Void> {
+
+        private CityDao mAsyncTaskDao;
+
+        private updateAsyncTask(CityDao dao) {
+            this.mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(City... cities) {
+            mAsyncTaskDao.update(cities[0]);
+            return null;
+        }
+    }
+
+
+
 }

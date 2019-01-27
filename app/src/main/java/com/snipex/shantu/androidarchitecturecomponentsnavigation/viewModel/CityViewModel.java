@@ -30,4 +30,8 @@ public class CityViewModel extends AndroidViewModel {
     public void insert(City city) {
         cityRepository.insert(city);
     }
+
+    public void update(City city) {
+        cityRepository.update(city);
+    }
 }

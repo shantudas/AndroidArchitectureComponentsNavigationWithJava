@@ -31,6 +31,9 @@
         android:label="@string/label_fragment_add_city"
         tools:layout="@layout/fragment_add_city" >
 
+        <action
+            android:id="@+id/action_addCityFragment_to_manageCityFragment"
+            app:destination="@id/manageCityFragment" />
     </fragment>
 
 </navigation>

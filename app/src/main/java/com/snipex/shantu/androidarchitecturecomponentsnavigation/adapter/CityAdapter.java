@@ -2,6 +2,7 @@ package com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CityAdapter.ViewHolder holder, int position) {
         City city = cityArrayList.get(position);
+        Log.d("onBindViewHolder", city.getName()+city.isMyCity());
         holder.tvCityName.setText(city.getName());
 
     }
