@@ -18,23 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyCityAdapter extends RecyclerView.Adapter<MyCityAdapter.ViewHolder> {
 
-    private List<City> cityList=new ArrayList<City>();
+    private List<City> cityList = new ArrayList<City>();
     private Context context;
 
-    public MyCityAdapter(Context context){
-        this.context=context;
+    public MyCityAdapter(Context context) {
+        this.context = context;
     }
 
     @NonNull
     @Override
     public MyCityAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_each_row_add_city,parent,false);
-    return new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_each_row_add_city, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyCityAdapter.ViewHolder holder, int position) {
-        City city=cityList.get(position);
+        City city = cityList.get(position);
 
         holder.tvCityName.setText(city.getName());
     }

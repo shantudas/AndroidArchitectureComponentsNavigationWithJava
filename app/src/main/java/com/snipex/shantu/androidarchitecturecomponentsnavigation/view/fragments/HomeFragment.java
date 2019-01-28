@@ -22,7 +22,6 @@ import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 public class HomeFragment extends Fragment {
 
 
-    private Button btnManageCity;
     private static final String TAG = HomeFragment.class.getSimpleName();
 
     public HomeFragment() {
@@ -39,14 +38,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnManageCity = (Button) view.findViewById(R.id.btnManageCity);
-//        btnManageCity.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toManageCityFragment, null));
-        btnManageCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.toManageCityFragment);
-            }
-        });
     }
 
 }
