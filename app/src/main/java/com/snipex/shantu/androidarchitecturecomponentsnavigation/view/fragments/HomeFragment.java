@@ -71,6 +71,13 @@ public class HomeFragment extends Fragment {
         pager_slider.setAdapter(adapter);
         ll_pager_dots=view.findViewById(R.id.ll_pager_dots);
 
+
+        getWeatherData();
+
+    }
+
+    private void getWeatherData() {
+
     }
 
     private void getSliderDots(List<City> cities) {

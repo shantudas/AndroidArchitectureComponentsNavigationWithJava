@@ -22,6 +22,7 @@ dependencies {
     def nav_version = "1.0.0-alpha09"
     def room_version = "2.1.0-alpha03"
     def lifecycle_version = "2.0.0"
+    def work_version = "1.0.0-beta03"
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -41,6 +42,9 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    // work manager
+    implementation "android.arch.work:work-runtime:$work_version"
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
