@@ -5,5 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.HomeFragment">
 
+    <RelativeLayout
+        android:id="@+id/rl_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_pager_dots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
