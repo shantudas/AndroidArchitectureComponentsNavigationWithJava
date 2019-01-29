@@ -5,12 +5,21 @@
     <color name="colorAccent">#FF5252</color>
 
     <color name="bg_home_page">#2B2E34</color>
+
     <color name="misti">#f56c78</color>
     <color name="pink">#f3508d</color>
 
     <color name="cyan">#4CDEC8</color>
     <color name="teal">#009688</color>
 
+    <color name="amber">#FFC107</color>
+    <color name="orange">#FF5722</color>
+
     <color name="purple">#A857FE</color>
+
+    <color name="bg_card_light_black">#484A4E</color>
+    <color name="bg_card_divider">#2B2E34</color>
+
+
 
 </resources>
