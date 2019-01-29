@@ -4,7 +4,13 @@
     <color name="colorPrimaryDark">#512DA8</color>
     <color name="colorAccent">#FF5252</color>
 
+    <color name="bg_home_page">#2B2E34</color>
     <color name="misti">#f56c78</color>
     <color name="pink">#f3508d</color>
+
+    <color name="cyan">#4CDEC8</color>
+    <color name="teal">#009688</color>
+
+    <color name="purple">#A857FE</color>
 
 </resources>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_home_page"
     tools:context=".view.fragments.HomeFragment">
 
     <RelativeLayout
@@ -15,6 +16,7 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager_slider"
+            android:layout_above="@+id/ll_pager_dots"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
