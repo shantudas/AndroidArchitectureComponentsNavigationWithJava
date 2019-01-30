@@ -12,9 +12,10 @@ import android.widget.LinearLayout;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.PagerSliderAdapter;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.model.Weather;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.WeatherViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,9 @@ public class HomeFragment extends Fragment {
     private ImageView[] dots;
     private LinearLayout ll_pager_dots;
 
+
+    private WeatherViewModel weatherViewModel;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -59,7 +63,7 @@ public class HomeFragment extends Fragment {
         viewModel.getMyCities().observe(this, new Observer<List<City>>() {
             @Override
             public void onChanged(List<City> cities) {
-                Log.d(TAG, "onChanged: cities Size "+ cities.size());
+                Log.d(TAG, "onChanged: cities Size " + cities.size());
                 adapter.setPager(cities);
                 getSliderDots(cities);
             }
@@ -69,15 +73,34 @@ public class HomeFragment extends Fragment {
         pager_slider = view.findViewById(R.id.pager_slider);
         adapter = new PagerSliderAdapter(getContext());
         pager_slider.setAdapter(adapter);
-        ll_pager_dots=view.findViewById(R.id.ll_pager_dots);
+        ll_pager_dots = view.findViewById(R.id.ll_pager_dots);
 
-
+        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
         getWeatherData();
 
     }
 
     private void getWeatherData() {
-
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<Weather>() {
+            @Override
+            public void onChanged(Weather weather) {
+                if (weather != null) {
+                    Log.d(TAG, "onChanged: weather data" +
+                            "code "+ weather.getCode() +
+                            " date Time " + weather.getDateTime() +
+                            " temp " + weather.getMain().getTemp() +
+                            " humidity " + weather.getMain().getHumidity() +
+                            " pressure " + weather.getMain().getPressure() +
+                            " temp maximum " + weather.getMain().getTempMaximum() +
+                            " temp minimum " + weather.getMain().getTempMinimum() +
+                            " wind speed " + weather.getWind().getSpeed() +
+                            " wind degree " + weather.getWind().getDegree() +
+                            " sunrise " + weather.getSys().getSunrise() +
+                            " sunset " + weather.getSys().getSunset())
+                    ;
+                }
+            }
+        });
     }
 
     private void getSliderDots(List<City> cities) {
