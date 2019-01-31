@@ -9,12 +9,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {City.class}, version = 1, exportSchema = false)
+@Database(entities = {City.class,Weather.class}, version = 1, exportSchema = false)
 public abstract class WeatherDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "weather_database";
 
     public abstract CityDao cityDao();
+    public abstract WeatherDao weatherDao();
 
     private static WeatherDatabase instance;
 

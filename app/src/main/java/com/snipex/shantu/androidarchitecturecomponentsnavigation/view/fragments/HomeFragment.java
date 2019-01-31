@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.PagerSliderAdapter;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
-import com.snipex.shantu.androidarchitecturecomponentsnavigation.model.Weather;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.Weather;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.response.WeatherResponse;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.WeatherViewModel;
 
@@ -43,6 +45,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout ll_pager_dots;
 
 
+
     private WeatherViewModel weatherViewModel;
 
     public HomeFragment() {
@@ -64,8 +67,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<City> cities) {
                 Log.d(TAG, "onChanged: cities Size " + cities.size());
-                adapter.setPager(cities);
-                getSliderDots(cities);
+                if (cities.size()>0){
+                    adapter.setPager(cities);
+                    getSliderDots(cities);
+                }
             }
         });
 
@@ -76,31 +81,66 @@ public class HomeFragment extends Fragment {
         ll_pager_dots = view.findViewById(R.id.ll_pager_dots);
 
         weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+
+
         getWeatherData();
+
+        getWeatherDataFromDB();
 
     }
 
-    private void getWeatherData() {
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<Weather>() {
+    private void getWeatherDataFromDB() {
+        weatherViewModel.getWeatherListLiveData().observe(this, new Observer<List<Weather>>() {
             @Override
-            public void onChanged(Weather weather) {
-                if (weather != null) {
-                    Log.d(TAG, "onChanged: weather data" +
-                            "code "+ weather.getCode() +
-                            " date Time " + weather.getDateTime() +
-                            " temp " + weather.getMain().getTemp() +
-                            " humidity " + weather.getMain().getHumidity() +
-                            " pressure " + weather.getMain().getPressure() +
-                            " temp maximum " + weather.getMain().getTempMaximum() +
-                            " temp minimum " + weather.getMain().getTempMinimum() +
-                            " wind speed " + weather.getWind().getSpeed() +
-                            " wind degree " + weather.getWind().getDegree() +
-                            " sunrise " + weather.getSys().getSunrise() +
-                            " sunset " + weather.getSys().getSunset())
-                    ;
+            public void onChanged(List<Weather> weathers) {
+                if (weathers.size()>0){
+                    adapter.setWeather(weathers);
                 }
             }
         });
+    }
+
+    private void getWeatherData() {
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+            @Override
+            public void onChanged(WeatherResponse weatherResponse) {
+                if (weatherResponse != null) {
+                    Log.d(TAG, "onChanged: weatherResponse data" +
+                            "code " + weatherResponse.getCode() +
+                            " date Time " + weatherResponse.getDateTime() +
+                            " temp " + weatherResponse.getMain().getTemp() +
+                            " humidity " + weatherResponse.getMain().getHumidity() +
+                            " pressure " + weatherResponse.getMain().getPressure() +
+                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
+                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
+                            " wind speed " + weatherResponse.getWind().getSpeed() +
+                            " wind degree " + weatherResponse.getWind().getDegree() +
+                            " sunrise " + weatherResponse.getSys().getSunrise() +
+                            " sunset " + weatherResponse.getSys().getSunset())
+                    ;
+                    insertWeatherDataToDB(
+                            weatherResponse.getId(),
+                            weatherResponse.getMain().getTemp(),
+                            weatherResponse.getMain().getTempMinimum(),
+                            weatherResponse.getMain().getTempMaximum(),
+                            weatherResponse.getMain().getHumidity(),
+                            weatherResponse.getMain().getPressure(),
+                            weatherResponse.getWind().getSpeed(),
+                            weatherResponse.getWind().getDegree(),
+                            weatherResponse.getSys().getSunrise(),
+                            weatherResponse.getSys().getSunset()
+                    );
+
+                }
+            }
+        });
+    }
+
+    private void insertWeatherDataToDB(int id, String temp, String tempMinimum, String tempMaximum, String humidity, String pressure, String speed, String degree, String sunrise, String sunset) {
+
+        Weather weather = new Weather(id,temp,tempMinimum,tempMaximum,humidity,pressure,speed,degree,sunrise,sunset);
+        weatherViewModel.insert(weather);
+        Toast.makeText(getActivity(), " weather data saved to db", Toast.LENGTH_LONG).show();
     }
 
     private void getSliderDots(List<City> cities) {

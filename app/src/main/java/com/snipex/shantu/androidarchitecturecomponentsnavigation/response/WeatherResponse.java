@@ -1,16 +1,14 @@
-package com.snipex.shantu.androidarchitecturecomponentsnavigation.model;
+package com.snipex.shantu.androidarchitecturecomponentsnavigation.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 
-import androidx.room.PrimaryKey;
+public class WeatherResponse {
 
-public class Weather {
-
-    @PrimaryKey
-    public int id;
+    @SerializedName("id")
+    @Expose
+    private int id;
 
     @SerializedName("cod")
     @Expose
@@ -31,8 +29,6 @@ public class Weather {
     @SerializedName("sys")
     @Expose
     private Sys sys;
-
-    private Date lastRefresh;
 
 
     public int getId() {
@@ -81,14 +77,6 @@ public class Weather {
 
     public void setSys(Sys sys) {
         this.sys = sys;
-    }
-
-    public Date getLastRefresh() {
-        return lastRefresh;
-    }
-
-    public void setLastRefresh(Date lastRefresh) {
-        this.lastRefresh = lastRefresh;
     }
 
     public class Main {

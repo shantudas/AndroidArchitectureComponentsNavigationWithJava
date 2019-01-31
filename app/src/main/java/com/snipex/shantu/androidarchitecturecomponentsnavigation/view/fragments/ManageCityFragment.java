@@ -75,7 +75,5 @@ public class ManageCityFragment extends Fragment {
                 Log.e(TAG, "onChanged: " + cities.size());
             }
         });
-
-
     }
 }
