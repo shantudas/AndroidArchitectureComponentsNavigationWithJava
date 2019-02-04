@@ -60,75 +60,33 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         viewModel = ViewModelProviders.of(this).get(CityViewModel.class);
+        pager_slider = view.findViewById(R.id.pager_slider);
+        adapter = new PagerSliderAdapter(getContext());
+        pager_slider.setAdapter(adapter);
+        ll_pager_dots = view.findViewById(R.id.ll_pager_dots);
+        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+
+
         viewModel.getMyCities().observe(this, new Observer<List<City>>() {
             @Override
             public void onChanged(List<City> cities) {
                 Log.d(TAG, "onChanged: cities Size " + cities.size());
                 if (cities.size() > 0) {
                     getSliderDots(cities);
-
-                    getCitiesWeather(cities);
+                    //getCitiesWeather(cities);
                 }
             }
         });
 
 
-        pager_slider = view.findViewById(R.id.pager_slider);
-        adapter = new PagerSliderAdapter(getContext());
-        pager_slider.setAdapter(adapter);
-        ll_pager_dots = view.findViewById(R.id.ll_pager_dots);
-
-        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-        getWeatherData();
+        getWeatherDataFromServer();
 
         getWeatherDataFromDB();
 
     }
 
-    private void getCitiesWeather(List<City> cities) {
-        for (int i = 0; i < cities.size(); i++) {
-            Log.d(TAG, "getCitiesWeather: cities data " + cities.get(i).getId() + " " + cities.get(i).getName());
-            getCitiesWeatherData(cities.get(i).getId());
-        }
-    }
-
-    private void getCitiesWeatherData(int cityID) {
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
-            @Override
-            public void onChanged(WeatherResponse weatherResponse) {
-                if (weatherResponse != null) {
-                    Log.d(TAG, "onChanged: weatherResponse data" +
-                            "code " + weatherResponse.getCode() +
-                            " date Time " + weatherResponse.getDateTime() +
-                            " temp " + weatherResponse.getMain().getTemp() +
-                            " humidity " + weatherResponse.getMain().getHumidity() +
-                            " pressure " + weatherResponse.getMain().getPressure() +
-                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
-                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
-                            " wind speed " + weatherResponse.getWind().getSpeed() +
-                            " wind degree " + weatherResponse.getWind().getDegree() +
-                            " sunrise " + weatherResponse.getSys().getSunrise() +
-                            " sunset " + weatherResponse.getSys().getSunset())
-                    ;
-                    insertWeatherDataToDB(
-                            weatherResponse.getId(),
-                            weatherResponse.getCityName(),
-                            weatherResponse.getMain().getTemp(),
-                            weatherResponse.getMain().getTempMinimum(),
-                            weatherResponse.getMain().getTempMaximum(),
-                            weatherResponse.getMain().getHumidity(),
-                            weatherResponse.getMain().getPressure(),
-                            weatherResponse.getWind().getSpeed(),
-                            weatherResponse.getWind().getDegree(),
-                            weatherResponse.getSys().getSunrise(),
-                            weatherResponse.getSys().getSunset()
-                    );
-
-                }
-            }
-        });
-    }
 
     private void getWeatherDataFromDB() {
         weatherViewModel.getWeatherListLiveData().observe(this, new Observer<List<Weather>>() {
@@ -142,50 +100,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void getWeatherData() {
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
-            @Override
-            public void onChanged(WeatherResponse weatherResponse) {
-                if (weatherResponse != null) {
-                    Log.d(TAG, "onChanged: weatherResponse data" +
-                            "code " + weatherResponse.getCode() +
-                            " date Time " + weatherResponse.getDateTime() +
-                            " temp " + weatherResponse.getMain().getTemp() +
-                            " humidity " + weatherResponse.getMain().getHumidity() +
-                            " pressure " + weatherResponse.getMain().getPressure() +
-                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
-                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
-                            " wind speed " + weatherResponse.getWind().getSpeed() +
-                            " wind degree " + weatherResponse.getWind().getDegree() +
-                            " sunrise " + weatherResponse.getSys().getSunrise() +
-                            " sunset " + weatherResponse.getSys().getSunset())
-                    ;
-                    insertWeatherDataToDB(
-                            weatherResponse.getId(),
-                            weatherResponse.getCityName(),
-                            weatherResponse.getMain().getTemp(),
-                            weatherResponse.getMain().getTempMinimum(),
-                            weatherResponse.getMain().getTempMaximum(),
-                            weatherResponse.getMain().getHumidity(),
-                            weatherResponse.getMain().getPressure(),
-                            weatherResponse.getWind().getSpeed(),
-                            weatherResponse.getWind().getDegree(),
-                            weatherResponse.getSys().getSunrise(),
-                            weatherResponse.getSys().getSunset()
-                    );
 
-                }
-            }
-        });
-    }
-
-    private void insertWeatherDataToDB(int id, String cityName, String temp, String tempMinimum, String tempMaximum, String humidity, String pressure, String speed, String degree, String sunrise, String sunset) {
-
-        Weather weather = new Weather(id, cityName, temp, tempMinimum, tempMaximum, humidity, pressure, speed, degree, sunrise, sunset);
-        weatherViewModel.insert(weather);
-
-    }
-
+    /**
+     * get pager slider dots
+     *
+     * @param cities
+     */
     private void getSliderDots(List<City> cities) {
         dotsCount = cities.size();
         dots = new ImageView[dotsCount];
@@ -230,4 +150,110 @@ public class HomeFragment extends Fragment {
 
     }
 
+
+    /**
+     * get weather data from server and store to room database
+     *
+     * @param @null
+     */
+    private void getWeatherDataFromServer() {
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+            @Override
+            public void onChanged(WeatherResponse weatherResponse) {
+                if (weatherResponse != null) {
+                    Log.d(TAG, "onChanged: weatherResponse data " +
+                            " id " + weatherResponse.getId() +
+                            " code " + weatherResponse.getCode() +
+                            " date Time " + weatherResponse.getDateTime() +
+                            " temp " + weatherResponse.getMain().getTemp() +
+                            " humidity " + weatherResponse.getMain().getHumidity() +
+                            " pressure " + weatherResponse.getMain().getPressure() +
+                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
+                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
+                            " wind speed " + weatherResponse.getWind().getSpeed() +
+                            " wind degree " + weatherResponse.getWind().getDegree() +
+                            " sunrise " + weatherResponse.getSys().getSunrise() +
+                            " sunset " + weatherResponse.getSys().getSunset())
+                    ;
+                    insertWeatherDataToDB(
+                            weatherResponse.getId(),
+                            weatherResponse.getCityName(),
+                            weatherResponse.getMain().getTemp(),
+                            weatherResponse.getMain().getTempMinimum(),
+                            weatherResponse.getMain().getTempMaximum(),
+                            weatherResponse.getMain().getHumidity(),
+                            weatherResponse.getMain().getPressure(),
+                            weatherResponse.getWind().getSpeed(),
+                            weatherResponse.getWind().getDegree(),
+                            weatherResponse.getSys().getSunrise(),
+                            weatherResponse.getSys().getSunset()
+                    );
+
+                }
+            }
+        });
+    }
+
+    /**
+     * store into room database
+     *
+     * @param
+     */
+    private void insertWeatherDataToDB(int id, String cityName, String temp, String tempMinimum, String tempMaximum, String humidity, String pressure, String speed, String degree, String sunrise, String sunset) {
+
+        Weather weather = new Weather(id, cityName, temp, tempMinimum, tempMaximum, humidity, pressure, speed, degree, sunrise, sunset);
+        weatherViewModel.insert(weather);
+
+    }
+
+
+    /**
+     * for each cities get weather data from server
+     * Note :: try to call this from work manager
+     *
+     * @param cities
+     */
+    private void getCitiesWeather(List<City> cities) {
+        for (int i = 0; i < cities.size(); i++) {
+            Log.d(TAG, "getCitiesWeather: cities data " + cities.get(i).getId() + " " + cities.get(i).getName());
+            getCitiesWeatherData(cities.get(i).getId());
+        }
+    }
+
+    private void getCitiesWeatherData(int cityID) {
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+            @Override
+            public void onChanged(WeatherResponse weatherResponse) {
+                if (weatherResponse != null) {
+                    Log.d(TAG, "onChanged: weatherResponse data" +
+                            "code " + weatherResponse.getCode() +
+                            " date Time " + weatherResponse.getDateTime() +
+                            " temp " + weatherResponse.getMain().getTemp() +
+                            " humidity " + weatherResponse.getMain().getHumidity() +
+                            " pressure " + weatherResponse.getMain().getPressure() +
+                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
+                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
+                            " wind speed " + weatherResponse.getWind().getSpeed() +
+                            " wind degree " + weatherResponse.getWind().getDegree() +
+                            " sunrise " + weatherResponse.getSys().getSunrise() +
+                            " sunset " + weatherResponse.getSys().getSunset())
+                    ;
+                    insertWeatherDataToDB(
+                            weatherResponse.getId(),
+                            weatherResponse.getCityName(),
+                            weatherResponse.getMain().getTemp(),
+                            weatherResponse.getMain().getTempMinimum(),
+                            weatherResponse.getMain().getTempMaximum(),
+                            weatherResponse.getMain().getHumidity(),
+                            weatherResponse.getMain().getPressure(),
+                            weatherResponse.getWind().getSpeed(),
+                            weatherResponse.getWind().getDegree(),
+                            weatherResponse.getSys().getSunrise(),
+                            weatherResponse.getSys().getSunset()
+                    );
+
+                }
+            }
+        });
+    }
 }
