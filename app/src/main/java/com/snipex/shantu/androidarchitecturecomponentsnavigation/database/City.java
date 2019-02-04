@@ -73,7 +73,7 @@ public class City {
 
     public static City[] populateData() {
         return new City[]{
-                new City(1188909, "Dhaka", "23.8103", "90.4125", false),
+                new City(1185241, "Dhaka", "23.8103", "90.4125", false),
                 new City(1185128, "Rajshahi", "24.3636", "88.6241", false),
                 new City(1185099, "Sylhet", "24.8949", "91.8687", false),
                 new City(6413609, "Chattogram", "22.3569", "91.7832", false),

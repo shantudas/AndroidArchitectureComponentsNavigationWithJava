@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.PagerSliderAdapter;
@@ -45,7 +44,6 @@ public class HomeFragment extends Fragment {
     private LinearLayout ll_pager_dots;
 
 
-
     private WeatherViewModel weatherViewModel;
 
     public HomeFragment() {
@@ -67,9 +65,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<City> cities) {
                 Log.d(TAG, "onChanged: cities Size " + cities.size());
-                if (cities.size()>0){
-                    adapter.setPager(cities);
+                if (cities.size() > 0) {
                     getSliderDots(cities);
+
+                    getCitiesWeather(cities);
                 }
             }
         });
@@ -81,19 +80,62 @@ public class HomeFragment extends Fragment {
         ll_pager_dots = view.findViewById(R.id.ll_pager_dots);
 
         weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-
-
         getWeatherData();
 
         getWeatherDataFromDB();
 
     }
 
+    private void getCitiesWeather(List<City> cities) {
+        for (int i = 0; i < cities.size(); i++) {
+            Log.d(TAG, "getCitiesWeather: cities data " + cities.get(i).getId() + " " + cities.get(i).getName());
+            getCitiesWeatherData(cities.get(i).getId());
+        }
+    }
+
+    private void getCitiesWeatherData(int cityID) {
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+            @Override
+            public void onChanged(WeatherResponse weatherResponse) {
+                if (weatherResponse != null) {
+                    Log.d(TAG, "onChanged: weatherResponse data" +
+                            "code " + weatherResponse.getCode() +
+                            " date Time " + weatherResponse.getDateTime() +
+                            " temp " + weatherResponse.getMain().getTemp() +
+                            " humidity " + weatherResponse.getMain().getHumidity() +
+                            " pressure " + weatherResponse.getMain().getPressure() +
+                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
+                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
+                            " wind speed " + weatherResponse.getWind().getSpeed() +
+                            " wind degree " + weatherResponse.getWind().getDegree() +
+                            " sunrise " + weatherResponse.getSys().getSunrise() +
+                            " sunset " + weatherResponse.getSys().getSunset())
+                    ;
+                    insertWeatherDataToDB(
+                            weatherResponse.getId(),
+                            weatherResponse.getCityName(),
+                            weatherResponse.getMain().getTemp(),
+                            weatherResponse.getMain().getTempMinimum(),
+                            weatherResponse.getMain().getTempMaximum(),
+                            weatherResponse.getMain().getHumidity(),
+                            weatherResponse.getMain().getPressure(),
+                            weatherResponse.getWind().getSpeed(),
+                            weatherResponse.getWind().getDegree(),
+                            weatherResponse.getSys().getSunrise(),
+                            weatherResponse.getSys().getSunset()
+                    );
+
+                }
+            }
+        });
+    }
+
     private void getWeatherDataFromDB() {
         weatherViewModel.getWeatherListLiveData().observe(this, new Observer<List<Weather>>() {
             @Override
             public void onChanged(List<Weather> weathers) {
-                if (weathers.size()>0){
+                Log.d(TAG, "onChanged: weather size" + weathers.size());
+                if (weathers.size() > 0) {
                     adapter.setWeather(weathers);
                 }
             }
@@ -120,6 +162,7 @@ public class HomeFragment extends Fragment {
                     ;
                     insertWeatherDataToDB(
                             weatherResponse.getId(),
+                            weatherResponse.getCityName(),
                             weatherResponse.getMain().getTemp(),
                             weatherResponse.getMain().getTempMinimum(),
                             weatherResponse.getMain().getTempMaximum(),
@@ -136,11 +179,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void insertWeatherDataToDB(int id, String temp, String tempMinimum, String tempMaximum, String humidity, String pressure, String speed, String degree, String sunrise, String sunset) {
+    private void insertWeatherDataToDB(int id, String cityName, String temp, String tempMinimum, String tempMaximum, String humidity, String pressure, String speed, String degree, String sunrise, String sunset) {
 
-        Weather weather = new Weather(id,temp,tempMinimum,tempMaximum,humidity,pressure,speed,degree,sunrise,sunset);
+        Weather weather = new Weather(id, cityName, temp, tempMinimum, tempMaximum, humidity, pressure, speed, degree, sunrise, sunset);
         weatherViewModel.insert(weather);
-        Toast.makeText(getActivity(), " weather data saved to db", Toast.LENGTH_LONG).show();
+
     }
 
     private void getSliderDots(List<City> cities) {

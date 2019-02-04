@@ -9,7 +9,7 @@ import retrofit2.http.Query;
 public interface ApiRequest {
 
     @GET("data/2.5/weather/")
-    Call<WeatherResponse> getWatherData(
+    Call<WeatherResponse> getWeatherData(
             @Query("APPID") String app_id,
             @Query("id") String id
     );

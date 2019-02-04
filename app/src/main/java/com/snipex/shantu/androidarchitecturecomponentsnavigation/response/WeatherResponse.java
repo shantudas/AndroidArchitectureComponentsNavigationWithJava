@@ -10,6 +10,10 @@ public class WeatherResponse {
     @Expose
     private int id;
 
+    @SerializedName("name")
+    @Expose
+    private String cityName;
+
     @SerializedName("cod")
     @Expose
     private String code;
@@ -53,6 +57,14 @@ public class WeatherResponse {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public Main getMain() {

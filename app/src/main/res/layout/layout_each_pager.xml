@@ -6,12 +6,6 @@
     <data>
 
         <variable
-            name="city"
-            type="com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City">
-
-        </variable>
-
-        <variable
             name="weather"
             type="com.snipex.shantu.androidarchitecturecomponentsnavigation.database.Weather">
 
@@ -43,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="@{city.name}"
+                    android:text="@{weather.cityName}"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />

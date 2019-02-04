@@ -22,7 +22,6 @@ import androidx.viewpager.widget.ViewPager;
 public class PagerSliderAdapter extends PagerAdapter {
 
     private static final String TAG = PagerSliderAdapter.class.getSimpleName();
-    private List<City> cityList = new ArrayList<City>();
     private List<Weather> weatherList = new ArrayList<Weather>();
     private Context context;
     LayoutEachPagerBinding binding;
@@ -55,11 +54,13 @@ public class PagerSliderAdapter extends PagerAdapter {
         container.addView(myPagerLayout, 0);
         return myPagerLayout;*/
 
-        City city = cityList.get(position);
-        binding.setCity(city);
+        try {
+            Weather weather=weatherList.get(position);
+            binding.setWeather(weather);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        Weather weather=weatherList.get(position);
-        binding.setWeather(weather);
 
         container.addView(binding.getRoot());
         return binding.getRoot();
@@ -73,7 +74,7 @@ public class PagerSliderAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return cityList.size();
+        return weatherList.size();
     }
 
     @Override
@@ -81,10 +82,6 @@ public class PagerSliderAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    public void setPager(List<City> cities) {
-        this.cityList = cities;
-        notifyDataSetChanged();
-    }
 
     public void setWeather(List<Weather> weatherList){
         this.weatherList=weatherList;

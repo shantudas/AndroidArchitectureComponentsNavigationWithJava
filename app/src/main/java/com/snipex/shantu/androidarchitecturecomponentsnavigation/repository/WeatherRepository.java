@@ -3,6 +3,7 @@ package com.snipex.shantu.androidarchitecturecomponentsnavigation.repository;
 import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.Weather;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.WeatherDao;
@@ -43,7 +44,7 @@ public class WeatherRepository {
     public LiveData<WeatherResponse> getWeatherdata(String app_id, String id) {
         final MutableLiveData<WeatherResponse> data = new MutableLiveData<>();
 
-        apiRequest.getWatherData(app_id, id).enqueue(new Callback<WeatherResponse>() {
+        apiRequest.getWeatherData(app_id, id).enqueue(new Callback<WeatherResponse>() {
 
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -75,6 +76,7 @@ public class WeatherRepository {
         @Override
         protected Void doInBackground(Weather... weathers) {
             mAsyncTaskDao.insert(weathers[0]);
+            Log.d(TAG, "doInBackground: weather data inserted");
             return null;
         }
     }

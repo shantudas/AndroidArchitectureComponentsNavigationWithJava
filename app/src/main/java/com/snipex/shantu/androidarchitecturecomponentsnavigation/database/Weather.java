@@ -13,6 +13,9 @@ public class Weather {
     @ColumnInfo(name = "city_id")
     private int cityId;
 
+    @ColumnInfo(name = "city_name")
+    private String cityName;
+
     @ColumnInfo(name = "temp")
     private String temperature;
 
@@ -45,10 +48,11 @@ public class Weather {
 
     }
 
-    public Weather(int cityId, String temperature, String temperatureMinimum, String temperatureMaximum,
+    public Weather(int cityId,String cityName, String temperature, String temperatureMinimum, String temperatureMaximum,
                    String humidity,
                    String pressure, String windSpeed, String windDegree, String sunrise, String sunset) {
         this.cityId = cityId;
+        this.cityName = cityName;
         this.temperature = temperature;
         this.temperatureMinimum = temperatureMinimum;
         this.temperatureMaximum = temperatureMaximum;
@@ -68,6 +72,14 @@ public class Weather {
 
     public void setCityId(int cityId) {
         this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public String getTemperature() {
