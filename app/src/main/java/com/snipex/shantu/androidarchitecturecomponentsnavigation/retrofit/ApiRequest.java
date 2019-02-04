@@ -11,6 +11,6 @@ public interface ApiRequest {
     @GET("data/2.5/weather/")
     Call<WeatherResponse> getWeatherData(
             @Query("APPID") String app_id,
-            @Query("id") String id
+            @Query("id") int id
     );
 }

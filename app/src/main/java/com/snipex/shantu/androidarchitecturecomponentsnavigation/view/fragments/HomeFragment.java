@@ -75,13 +75,13 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "onChanged: cities Size " + cities.size());
                 if (cities.size() > 0) {
                     getSliderDots(cities);
-                    //getCitiesWeather(cities);
+                    getCitiesWeather(cities);
                 }
             }
         });
 
 
-        getWeatherDataFromServer();
+//        getWeatherDataFromServer();
 
         getWeatherDataFromDB();
 
@@ -156,8 +156,8 @@ public class HomeFragment extends Fragment {
      *
      * @param @null
      */
-    private void getWeatherDataFromServer() {
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+    /*private void getWeatherDataFromServer() {
+        weatherViewModel.getWeatherResponseLiveData(cityID).observe(this, new Observer<WeatherResponse>() {
             @Override
             public void onChanged(WeatherResponse weatherResponse) {
                 if (weatherResponse != null) {
@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * store into room database
@@ -203,6 +203,8 @@ public class HomeFragment extends Fragment {
 
         Weather weather = new Weather(id, cityName, temp, tempMinimum, tempMaximum, humidity, pressure, speed, degree, sunrise, sunset);
         weatherViewModel.insert(weather);
+
+        Log.d(TAG, "insertWeatherDataToDB: id " + id + " name " + cityName);
 
     }
 
@@ -215,18 +217,19 @@ public class HomeFragment extends Fragment {
      */
     private void getCitiesWeather(List<City> cities) {
         for (int i = 0; i < cities.size(); i++) {
-            Log.d(TAG, "getCitiesWeather: cities data " + cities.get(i).getId() + " " + cities.get(i).getName());
+            Log.d(TAG, "getCitiesWeather: cities " + cities.get(i).getId() + " " + cities.get(i).getName());
             getCitiesWeatherData(cities.get(i).getId());
         }
     }
 
     private void getCitiesWeatherData(int cityID) {
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+        weatherViewModel.getWeatherResponseLiveData(cityID).observe(this, new Observer<WeatherResponse>() {
             @Override
             public void onChanged(WeatherResponse weatherResponse) {
                 if (weatherResponse != null) {
                     Log.d(TAG, "onChanged: weatherResponse data" +
-                            "code " + weatherResponse.getCode() +
+                            "id " + weatherResponse.getId() +
+                            " code " + weatherResponse.getCode() +
                             " date Time " + weatherResponse.getDateTime() +
                             " temp " + weatherResponse.getMain().getTemp() +
                             " humidity " + weatherResponse.getMain().getHumidity() +
@@ -255,5 +258,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
     }
 }

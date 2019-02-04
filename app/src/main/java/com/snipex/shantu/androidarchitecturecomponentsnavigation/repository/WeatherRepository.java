@@ -41,7 +41,7 @@ public class WeatherRepository {
         return weatherListLiveData;
     }
 
-    public LiveData<WeatherResponse> getWeatherdata(String app_id, String id) {
+    public LiveData<WeatherResponse> getWeatherdata(String app_id, int id) {
         final MutableLiveData<WeatherResponse> data = new MutableLiveData<>();
 
         apiRequest.getWeatherData(app_id, id).enqueue(new Callback<WeatherResponse>() {
