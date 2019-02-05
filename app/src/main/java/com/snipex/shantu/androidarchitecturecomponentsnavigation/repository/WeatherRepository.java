@@ -33,8 +33,8 @@ public class WeatherRepository {
 
         WeatherDatabase db = WeatherDatabase.getDatabase(application);
 
-        weatherDao=db.weatherDao();
-        weatherListLiveData=weatherDao.getWeather();
+        weatherDao = db.weatherDao();
+        weatherListLiveData = weatherDao.getWeather();
     }
 
     public LiveData<List<Weather>> getWeatherListLiveData() {
@@ -60,8 +60,17 @@ public class WeatherRepository {
         return data;
     }
 
+
+    public LiveData<Weather> getWeatherItem(int itemId) {
+        return weatherDao.getWeatherItemById(itemId);
+    }
+
     public void insert(Weather weather) {
         new insertAsyncTask(weatherDao).execute(weather);
+    }
+
+    public void delete(Weather weather) {
+        new deleteAsyncTask(weatherDao).execute(weather);
     }
 
     private static class insertAsyncTask extends AsyncTask<Weather, Void, Void> {
@@ -77,6 +86,21 @@ public class WeatherRepository {
         protected Void doInBackground(Weather... weathers) {
             mAsyncTaskDao.insert(weathers[0]);
             Log.d(TAG, "doInBackground: weather data inserted");
+            return null;
+        }
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Weather, Void, Void> {
+
+        private WeatherDao mAsyncTaskDao;
+
+        public deleteAsyncTask(WeatherDao weatherDao) {
+            this.mAsyncTaskDao=weatherDao;
+        }
+
+        @Override
+        protected Void doInBackground(Weather... weathers) {
+            mAsyncTaskDao.delete(weathers[0]);
             return null;
         }
     }

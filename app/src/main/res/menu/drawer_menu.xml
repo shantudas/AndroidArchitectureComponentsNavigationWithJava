@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_cities_weather"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="@string/nav_cities_weather" />
+        <item
             android:id="@+id/nav_mange_cities"
             android:icon="@android:drawable/ic_menu_set_as"
             android:title="@string/nav_menu_manage_city" />

@@ -25,7 +25,6 @@ public class WeatherViewModel extends AndroidViewModel {
         super(application);
 
         repository = new WeatherRepository(application);
-//        weatherResponseLiveData = repository.getWeatherdata(ApiConstants.APP_ID, "1185099");
 
         weatherListLiveData=repository.getWeatherListLiveData();
     }
@@ -41,5 +40,13 @@ public class WeatherViewModel extends AndroidViewModel {
 
     public void insert(Weather weather){
         repository.insert(weather);
+    }
+
+    public void delete(Weather weather){
+        repository.delete(weather);
+    }
+
+    public LiveData<Weather> getWeatherItem(int itemId){
+        return repository.getWeatherItem(itemId);
     }
 }

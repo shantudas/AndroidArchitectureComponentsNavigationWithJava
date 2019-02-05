@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_mange_cities:
                 navController.navigate(R.id.toManageCityFragment);
                 break;
+            case R.id.nav_cities_weather:
+                navController.navigate(R.id.toCityWeather);
+                break;
         }
         return true;
     }

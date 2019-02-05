@@ -13,6 +13,9 @@
         <action
             android:id="@+id/toManageCityFragment"
             app:destination="@+id/manageCityFragment" />
+        <action
+            android:id="@+id/toCityWeather"
+            app:destination="@+id/cityWeatherFragment" />
     </fragment>
     <fragment
         android:id="@+id/manageCityFragment"
@@ -34,6 +37,14 @@
         <action
             android:id="@+id/action_addCityFragment_to_manageCityFragment"
             app:destination="@id/manageCityFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cityWeatherFragment"
+        android:name="com.snipex.shantu.androidarchitecturecomponentsnavigation.view.fragments.CityWeatherFragment"
+        android:label="@string/label_fragment_city_weather"
+        tools:layout="@layout/fragment_city_weather" >
+
     </fragment>
 
 </navigation>

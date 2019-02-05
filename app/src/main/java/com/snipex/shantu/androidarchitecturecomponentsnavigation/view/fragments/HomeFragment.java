@@ -81,8 +81,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-//        getWeatherDataFromServer();
-
         getWeatherDataFromDB();
 
     }
@@ -151,48 +149,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    /**
-     * get weather data from server and store to room database
-     *
-     * @param @null
-     */
-    /*private void getWeatherDataFromServer() {
-        weatherViewModel.getWeatherResponseLiveData(cityID).observe(this, new Observer<WeatherResponse>() {
-            @Override
-            public void onChanged(WeatherResponse weatherResponse) {
-                if (weatherResponse != null) {
-                    Log.d(TAG, "onChanged: weatherResponse data " +
-                            " id " + weatherResponse.getId() +
-                            " code " + weatherResponse.getCode() +
-                            " date Time " + weatherResponse.getDateTime() +
-                            " temp " + weatherResponse.getMain().getTemp() +
-                            " humidity " + weatherResponse.getMain().getHumidity() +
-                            " pressure " + weatherResponse.getMain().getPressure() +
-                            " temp maximum " + weatherResponse.getMain().getTempMaximum() +
-                            " temp minimum " + weatherResponse.getMain().getTempMinimum() +
-                            " wind speed " + weatherResponse.getWind().getSpeed() +
-                            " wind degree " + weatherResponse.getWind().getDegree() +
-                            " sunrise " + weatherResponse.getSys().getSunrise() +
-                            " sunset " + weatherResponse.getSys().getSunset())
-                    ;
-                    insertWeatherDataToDB(
-                            weatherResponse.getId(),
-                            weatherResponse.getCityName(),
-                            weatherResponse.getMain().getTemp(),
-                            weatherResponse.getMain().getTempMinimum(),
-                            weatherResponse.getMain().getTempMaximum(),
-                            weatherResponse.getMain().getHumidity(),
-                            weatherResponse.getMain().getPressure(),
-                            weatherResponse.getWind().getSpeed(),
-                            weatherResponse.getWind().getDegree(),
-                            weatherResponse.getSys().getSunrise(),
-                            weatherResponse.getSys().getSunset()
-                    );
-
-                }
-            }
-        });
-    }*/
 
     /**
      * store into room database

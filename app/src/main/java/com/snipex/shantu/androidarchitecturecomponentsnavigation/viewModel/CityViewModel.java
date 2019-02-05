@@ -40,4 +40,5 @@ public class CityViewModel extends AndroidViewModel {
     public LiveData<List<City>> getMyCities(){
         return allMyCities;
     }
+
 }
