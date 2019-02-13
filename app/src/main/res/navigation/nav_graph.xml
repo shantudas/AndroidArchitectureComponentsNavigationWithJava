@@ -45,6 +45,16 @@
         android:label="@string/label_fragment_city_weather"
         tools:layout="@layout/fragment_city_weather" >
 
+        <action
+            android:id="@+id/actionToCityWeatherDetailsFragment"
+            app:destination="@id/cityWeatherDetailsFragment" >
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/cityWeatherDetailsFragment"
+        android:name="com.snipex.shantu.androidarchitecturecomponentsnavigation.view.fragments.CityWeatherDetailsFragment"
+        android:label="fragment_city_weather_details"
+        tools:layout="@layout/fragment_city_weather_details" >
     </fragment>
 
 </navigation>

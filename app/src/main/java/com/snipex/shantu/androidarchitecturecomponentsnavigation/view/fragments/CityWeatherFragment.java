@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.AllCityAdapter;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.database.City;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.ClickListener;
+import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.RecyclerTouchListener;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 
 import java.security.PrivateKey;
@@ -21,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,6 +59,24 @@ public class CityWeatherFragment extends Fragment {
         recyclerViewAllCity.setLayoutManager(layoutManager);
         adapter = new AllCityAdapter(getContext());
         recyclerViewAllCity.setAdapter(adapter);
+
+        recyclerViewAllCity.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerViewAllCity, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                City city = cityList.get(position);
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("-args-city-id", city.getId());
+
+                Navigation.findNavController(view).navigate(R.id.actionToCityWeatherDetailsFragment,bundle);
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         getCityList();
 

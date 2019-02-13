@@ -27,6 +27,7 @@ public class WeatherViewModel extends AndroidViewModel {
         repository = new WeatherRepository(application);
 
         weatherListLiveData=repository.getWeatherListLiveData();
+
     }
 
     public LiveData<List<Weather>> getWeatherListLiveData() {
