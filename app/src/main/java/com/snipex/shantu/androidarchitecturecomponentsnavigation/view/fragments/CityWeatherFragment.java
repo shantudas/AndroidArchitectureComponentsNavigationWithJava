@@ -2,11 +2,9 @@ package com.snipex.shantu.androidarchitecturecomponentsnavigation.view.fragments
 
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.R;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.adapter.AllCityAdapter;
@@ -15,7 +13,6 @@ import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.ClickLis
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.helper.RecyclerTouchListener;
 import com.snipex.shantu.androidarchitecturecomponentsnavigation.viewModel.CityViewModel;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +27,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
+ * CityWeatherFragment is for getting city list item and,
+ * on each item clicked send to CityWeatherDetailsFragment
+ *
+ * @author shantu
  */
 public class CityWeatherFragment extends Fragment {
 
     private RecyclerView recyclerViewAllCity;
-    private LinearLayoutManager layoutManager;
     private AllCityAdapter adapter;
     private CityViewModel cityViewModel;
-    private List<City> cityList = new ArrayList<City>();
+    private List<City> cityList = new ArrayList<>();
 
+    /**
+     * empty constructor
+     */
     public CityWeatherFragment() {
         // Required empty public constructor
     }
@@ -53,22 +56,36 @@ public class CityWeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         cityViewModel = ViewModelProviders.of(this).get(CityViewModel.class);
         recyclerViewAllCity = view.findViewById(R.id.recyclerViewAllCity);
-        layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewAllCity.setLayoutManager(layoutManager);
         adapter = new AllCityAdapter(getContext());
         recyclerViewAllCity.setAdapter(adapter);
 
+        getCityList();  //  get city list from db
+
+        cityListItemOnClicked();    //  city list item on item clicked
+
+    }
+
+
+    /**
+     * City list item on clicked send user to CityWeatherDetailsFragment
+     * using navigation graph action
+     * passing city id through bundle
+     */
+    private void cityListItemOnClicked() {
         recyclerViewAllCity.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerViewAllCity, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                City city = cityList.get(position);
+                City city = cityList.get(position); // get on clicked city
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("-args-city-id", city.getId());
+                bundle.putInt("argsCityId", city.getId());
 
-                Navigation.findNavController(view).navigate(R.id.actionToCityWeatherDetailsFragment,bundle);
+                Navigation.findNavController(view).navigate(R.id.actionToCityWeatherDetailsFragment, bundle);
 
             }
 
@@ -77,11 +94,13 @@ public class CityWeatherFragment extends Fragment {
 
             }
         }));
-
-        getCityList();
-
     }
 
+
+    /**
+     * getting city list from database
+     * set adapter for recycler view
+     */
     private void getCityList() {
         cityViewModel.getAllCities().observe(this, new Observer<List<City>>() {
             @Override

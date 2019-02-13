@@ -49,7 +49,7 @@ public class CityWeatherDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel= ViewModelProviders.of(this).get(WeatherViewModel.class);
-        int cityId=getArguments().getInt("-args-city-id");
+        int cityId=getArguments().getInt("argsCityId");
         Log.d(TAG, "onViewCreated: "+cityId);
 
         getWeatherInfo(cityId);
